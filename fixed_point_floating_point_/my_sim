@@ -1,0 +1,168 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "12.0 (devel)" "(s20150603-1539-g2693dd32b)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 9;
+:vpi_module "D:\iverilog\lib\ivl\system.vpi";
+:vpi_module "D:\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "D:\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "D:\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "D:\iverilog\lib\ivl\va_math.vpi";
+S_0000020067eab0f0 .scope module, "tb_arithmetic" "tb_arithmetic" 2 3;
+ .timescale -9 -9;
+v0000020067f19d80_0 .var/s "A", 31 0;
+v0000020067f194c0_0 .var/s "B", 31 0;
+v0000020067f197e0_0 .net/s "Prod", 31 0, v0000020067f19f60_0;  1 drivers
+v0000020067f19880_0 .net/s "Sum", 31 0, v0000020067ebf570_0;  1 drivers
+v0000020067f199c0_0 .net "ov_add", 0 0, v0000020067ebf610_0;  1 drivers
+v0000020067f19a60_0 .net "ov_mult", 0 0, v0000020067f19240_0;  1 drivers
+S_0000020067ebbba0 .scope module, "u_add" "fixed_point_add" 2 10, 3 2 0, S_0000020067eab0f0;
+ .timescale -9 -9;
+    .port_info 0 /INPUT 32 "a";
+    .port_info 1 /INPUT 32 "b";
+    .port_info 2 /OUTPUT 32 "out";
+    .port_info 3 /OUTPUT 1 "overflow";
+v0000020067e6bf10_0 .net *"_ivl_1", 0 0, L_0000020067f19ec0;  1 drivers
+v0000020067ebbd30_0 .net *"_ivl_2", 32 0, L_0000020067f19b00;  1 drivers
+v0000020067ebbdd0_0 .net *"_ivl_5", 0 0, L_0000020067f19ce0;  1 drivers
+v0000020067ebbe70_0 .net *"_ivl_6", 32 0, L_0000020067f192e0;  1 drivers
+v0000020067ebbf10_0 .net/s "a", 31 0, v0000020067f19d80_0;  1 drivers
+v0000020067ebf4d0_0 .net/s "b", 31 0, v0000020067f194c0_0;  1 drivers
+v0000020067ebf570_0 .var/s "out", 31 0;
+v0000020067ebf610_0 .var "overflow", 0 0;
+v0000020067ebf6b0_0 .net/s "temp_sum", 32 0, L_0000020067f19ba0;  1 drivers
+E_0000020067ea5320 .event anyedge, v0000020067ebf6b0_0;
+L_0000020067f19ec0 .part v0000020067f19d80_0, 31, 1;
+L_0000020067f19b00 .concat [ 32 1 0 0], v0000020067f19d80_0, L_0000020067f19ec0;
+L_0000020067f19ce0 .part v0000020067f194c0_0, 31, 1;
+L_0000020067f192e0 .concat [ 32 1 0 0], v0000020067f194c0_0, L_0000020067f19ce0;
+L_0000020067f19ba0 .arith/sum 33, L_0000020067f19b00, L_0000020067f192e0;
+S_0000020067ebf750 .scope module, "u_mult" "fixed_point_mult" 2 11, 3 26 0, S_0000020067eab0f0;
+ .timescale -9 -9;
+    .port_info 0 /INPUT 32 "a";
+    .port_info 1 /INPUT 32 "b";
+    .port_info 2 /OUTPUT 32 "out";
+    .port_info 3 /OUTPUT 1 "overflow";
+v0000020067e66710_0 .net/s *"_ivl_0", 63 0, L_0000020067f19c40;  1 drivers
+v0000020067e667b0_0 .net/s *"_ivl_2", 63 0, L_0000020067f19e20;  1 drivers
+v0000020067f19560_0 .net *"_ivl_8", 47 0, L_0000020067f19060;  1 drivers
+v0000020067f196a0_0 .net/s "a", 31 0, v0000020067f19d80_0;  alias, 1 drivers
+v0000020067f19740_0 .net/s "b", 31 0, v0000020067f194c0_0;  alias, 1 drivers
+v0000020067f19f60_0 .var/s "out", 31 0;
+v0000020067f19240_0 .var "overflow", 0 0;
+v0000020067f19600_0 .net/s "shifted_mult", 63 0, L_0000020067f19100;  1 drivers
+v0000020067f19920_0 .net/s "temp_mult", 63 0, L_0000020067f19380;  1 drivers
+E_0000020067ea4d60 .event anyedge, v0000020067f19600_0;
+L_0000020067f19c40 .extend/s 64, v0000020067f19d80_0;
+L_0000020067f19e20 .extend/s 64, v0000020067f194c0_0;
+L_0000020067f19380 .arith/mult 64, L_0000020067f19c40, L_0000020067f19e20;
+L_0000020067f19060 .part L_0000020067f19380, 16, 48;
+L_0000020067f19100 .extend/s 64, L_0000020067f19060;
+    .scope S_0000020067ebbba0;
+T_0 ;
+    %wait E_0000020067ea5320;
+    %load/vec4 v0000020067ebf6b0_0;
+    %parti/s 1, 32, 7;
+    %load/vec4 v0000020067ebf6b0_0;
+    %parti/s 1, 31, 6;
+    %cmp/ne;
+    %jmp/0xz  T_0.0, 4;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0000020067ebf610_0, 0, 1;
+    %load/vec4 v0000020067ebf6b0_0;
+    %parti/s 1, 32, 7;
+    %cmpi/e 0, 0, 1;
+    %flag_mov 8, 4;
+    %jmp/0 T_0.2, 8;
+    %pushi/vec4 2147483647, 0, 32;
+    %jmp/1 T_0.3, 8;
+T_0.2 ; End of true expr.
+    %pushi/vec4 2147483648, 0, 32;
+    %jmp/0 T_0.3, 8;
+ ; End of false expr.
+    %blend;
+T_0.3;
+    %store/vec4 v0000020067ebf570_0, 0, 32;
+    %jmp T_0.1;
+T_0.0 ;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0000020067ebf610_0, 0, 1;
+    %load/vec4 v0000020067ebf6b0_0;
+    %parti/s 32, 0, 2;
+    %store/vec4 v0000020067ebf570_0, 0, 32;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0, $push;
+    .scope S_0000020067ebf750;
+T_1 ;
+    %wait E_0000020067ea4d60;
+    %load/vec4 v0000020067f19600_0;
+    %cmpi/s 2147483647, 0, 64;
+    %flag_or 5, 4; GT is !LE
+    %flag_inv 5;
+    %jmp/0xz  T_1.0, 5;
+    %pushi/vec4 2147483647, 0, 32;
+    %store/vec4 v0000020067f19f60_0, 0, 32;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0000020067f19240_0, 0, 1;
+    %jmp T_1.1;
+T_1.0 ;
+    %load/vec4 v0000020067f19600_0;
+    %pushi/vec4 4294967295, 0, 32;
+    %concati/vec4 2147483648, 0, 32;
+    %cmp/s;
+    %jmp/0xz  T_1.2, 5;
+    %pushi/vec4 2147483648, 0, 32;
+    %store/vec4 v0000020067f19f60_0, 0, 32;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0000020067f19240_0, 0, 1;
+    %jmp T_1.3;
+T_1.2 ;
+    %load/vec4 v0000020067f19600_0;
+    %parti/s 32, 0, 2;
+    %store/vec4 v0000020067f19f60_0, 0, 32;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0000020067f19240_0, 0, 1;
+T_1.3 ;
+T_1.1 ;
+    %jmp T_1;
+    .thread T_1, $push;
+    .scope S_0000020067eab0f0;
+T_2 ;
+    %vpi_call 2 15 "$dumpfile", "wave.vcd" {0 0 0};
+    %vpi_call 2 16 "$dumpvars", 32'sb00000000000000000000000000000000, S_0000020067eab0f0 {0 0 0};
+    %end;
+    .thread T_2;
+    .scope S_0000020067eab0f0;
+T_3 ;
+    %pushi/vec4 32768, 0, 32;
+    %store/vec4 v0000020067f19d80_0, 0, 32;
+    %pushi/vec4 32768, 0, 32;
+    %store/vec4 v0000020067f194c0_0, 0, 32;
+    %delay 10, 0;
+    %vpi_call 2 24 "$display", "Time %0t: 0.5 * 0.5 = %d (Expected 16384)", $time, v0000020067f197e0_0 {0 0 0};
+    %pushi/vec4 46341, 0, 32;
+    %store/vec4 v0000020067f19d80_0, 0, 32;
+    %pushi/vec4 46341, 0, 32;
+    %store/vec4 v0000020067f194c0_0, 0, 32;
+    %delay 10, 0;
+    %vpi_call 2 31 "$display", "Time %0t: 0.707 * 0.707 = %d (Expected approx 32768)", $time, v0000020067f197e0_0 {0 0 0};
+    %pushi/vec4 2147483647, 0, 32;
+    %store/vec4 v0000020067f19d80_0, 0, 32;
+    %pushi/vec4 10000, 0, 32;
+    %store/vec4 v0000020067f194c0_0, 0, 32;
+    %delay 10, 0;
+    %vpi_call 2 37 "$display", "Time %0t: Max + 10000 = %h (Expected 7FFFFFFF - Saturation)", $time, v0000020067f19880_0 {0 0 0};
+    %pushi/vec4 4294901760, 0, 32;
+    %store/vec4 v0000020067f19d80_0, 0, 32;
+    %pushi/vec4 32768, 0, 32;
+    %store/vec4 v0000020067f194c0_0, 0, 32;
+    %delay 10, 0;
+    %vpi_call 2 45 "$finish" {0 0 0};
+    %end;
+    .thread T_3;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "tb_arithmetic.v";
+    "arithmetic_core.v";
